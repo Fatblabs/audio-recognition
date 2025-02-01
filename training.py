@@ -100,6 +100,7 @@ def setDataSetPath(path):
             tf.keras.layers.Dropout(0.5),
             tf.keras.layers.Dense(num_labels), #Number of outputs possible
         ])
+    return True
         
         
 

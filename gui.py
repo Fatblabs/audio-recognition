@@ -242,10 +242,11 @@ def init_teach_screen() -> None:
     def teach_me():
         #Add teach method call here. 
         path = input.get().strip()
-        file = open(path,"r")
-        t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...This is {file.name.split("\\")[-1].split(".")[0]}."))
-        #C:\Users\duozh\Data Structures\Competitive Programming\alphabet.py
-        t.start()
+        if training.setDataSetPath(path):
+            t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...I am learning."))
+            #C:\Users\duozh\Data Structures\Competitive Programming\alphabet.py
+            t.start()
+        t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...I can't find the folder."))
         
     btn = Button(
         master = screen,
