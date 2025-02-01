@@ -1,4 +1,6 @@
 from tkinter import *
+import threading
+import time
 
 window = Tk()
 window.geometry("300x300")
@@ -11,6 +13,18 @@ screen = Label(master = window)
 peach = "#ff7a7b"
 white = "#ffffff"
 black = "#000000"
+
+def type_slow(output : Label, btn : Button = None, text: str = None):
+    if text == None:
+        text = output['text']
+    if btn != None:
+        btn['state'] = DISABLED
+    output['text'] = ""
+    for i in range(len(text)):
+        time.sleep(0.05)
+        output['text'] += text[i]
+    if btn != None:
+        btn['state'] = NORMAL
 
 def init_start_screen() -> None:
 
@@ -28,14 +42,17 @@ def init_start_screen() -> None:
             ).grid(row = row, column = col, sticky = "nsew")
     screen.grid(column=0, row=0, sticky="nsew")
 
-    Label(
+    audio = Label(
         master = screen,
         text = "The Audio ",
         anchor = E,
         font = "Arial 50 bold",
         foreground = white, 
         background = peach, 
-    ).grid(row = 3, column = 1, sticky = "nsew")
+    )
+    audio.grid(row = 3, column = 1, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(audio,)).start()
+
 
     Label(
         master = screen,
@@ -46,14 +63,16 @@ def init_start_screen() -> None:
         background = peach, 
     ).grid(row = 5, column = 1, sticky = "nsew")
 
-    Label(
+    recognizer = Label(
         master = screen, 
         text = "Recognizer",
         anchor = W,
         font = "Arial 50 bold",
         foreground = peach,
         background = white, 
-    ).grid(row = 3, column = 4, sticky = "nsew")
+    )
+    recognizer.grid(row = 3, column = 4, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(recognizer,)).start()
 
     Label(
         master = screen,
@@ -65,22 +84,27 @@ def init_start_screen() -> None:
     ).grid(row = 5, column = 4, sticky = "nsew")
 
 
-    Button(
+    tryme = Button(
         master = screen,
         text = "Try Me!",
         font = "Arial 26 bold",
         foreground = peach, 
         background = white, 
         command=init_import_screen,
-    ).grid(row = 8, column = 1, sticky = "nsew")
+    )
+    tryme.grid(row = 8, column = 1, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(tryme,)).start()
 
-    Button(
+    teachme = Button(
         master = screen,
         text = "Teach Me!",
         font = "Arial 26 bold",
         foreground = peach, 
         background = white,  
-    ).grid(row = 8, column = 4, sticky = "nsew")
+        command = init_teach_screen,
+    )
+    teachme.grid(row = 8, column = 4, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(teachme,)).start()
 
 def init_import_screen() -> None:
 
@@ -90,7 +114,7 @@ def init_import_screen() -> None:
     screen = Label(master = window)
     for col in range(5):
         screen.columnconfigure(col, weight=1)#, minsize=330)
-        for row in range(10):
+        for row in range(11):
             screen.rowconfigure(row, weight=1)#, minsize=100)
             Label(
                 master = screen,
@@ -98,22 +122,55 @@ def init_import_screen() -> None:
             ).grid(row = row, column = col, sticky = "nsew")
     screen.grid(column=0, row=0, sticky="nsew")
 
-    Label(
+    title = Label(
         master = screen,
         text = "🔊 Import Audio Path 🔊",
         font = "Arial 50 bold",
         foreground = white, 
         background = peach, 
-    ).grid(row = 1, column = 2, sticky = "nsew")
+    )
+    title.grid(row = 1, column = 2, sticky = "nsew")
+    #threading.Thread(target = type_slow, args=(title,)).start()
 
-    Button(
+    home = Button(
         master = screen,
         text = "Return Home",
         font = "Arial 26 bold",
         foreground = peach, 
         background = white, 
         command=init_start_screen, 
-    ).grid(row = 8, column = 2, sticky = "nsew")
+    )
+    home.grid(row = 9, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(home,)).start()
+
+    output = Label(
+        master = screen,
+        text = "🤖: ...",
+        font = "Arial 26 bold",
+        foreground = white, 
+        background = peach, 
+    )
+    output.grid(row = 6, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(output,)).start()
+
+    btn = None
+
+    def who_am_i():
+        path = input.get().strip()
+        #Add recognition method here. 
+        t = threading.Thread(target = type_slow, args=(output, btn, "🤖: ...I don't know."))
+        t.start()
+        
+    btn = Button(
+        master = screen,
+        text = "Who do you think am I?",
+        font = "Arial 26 bold",
+        foreground = peach, 
+        background = white, 
+        command=who_am_i, 
+    )
+    btn.grid(row = 4, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(btn,)).start()
 
     input = Entry(
         master=screen, 
@@ -124,13 +181,97 @@ def init_import_screen() -> None:
     )
     input.grid(row = 3, column = 2, sticky = "nsew")
     input.insert(0, "Your audio file path here")
+    threading.Thread(target = type_slow, args=(input,)).start()
 
     def clear_input(_):
         input.delete(0, "end")
-        
+
     input.bind("<Button-1>", clear_input)
 
     
+def init_teach_screen() -> None:
+
+    for l in window.grid_slaves():
+        l.destroy()
+    
+    screen = Label(master = window)
+    for col in range(5):
+        screen.columnconfigure(col, weight=1)#, minsize=330)
+        for row in range(11):
+            screen.rowconfigure(row, weight=1)#, minsize=100)
+            Label(
+                master = screen,
+                background = white
+            ).grid(row = row, column = col, sticky = "nsew")
+    screen.grid(column=0, row=0, sticky="nsew")
+
+    title = Label(
+        master = screen,
+        text = "🔍 Teach Me! 🔍",
+        font = "Arial 50 bold",
+        foreground = peach, 
+        background = white, 
+    )
+    title.grid(row = 1, column = 2, sticky = "nsew")
+    #threading.Thread(target = type_slow, args=(title,)).start()
+
+    home = Button(
+        master = screen,
+        text = "Return Home",
+        font = "Arial 26 bold",
+        foreground = peach, 
+        background = white, 
+        command=init_start_screen, 
+    )
+    home.grid(row = 9, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(home,)).start()
+
+    output = Label(
+        master = screen,
+        text = "🤖: ...",
+        font = "Arial 26 bold",
+        foreground = peach, 
+        background = white, 
+    )
+    output.grid(row = 6, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(output,)).start()
+
+    btn = None
+
+    def teach_me():
+        #Add teach method call here. 
+        path = input.get().strip()
+        file = open(path,"r")
+        t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...This is {file.name.split("\\")[-1].split(".")[0]}."))
+        #C:\Users\duozh\Data Structures\Competitive Programming\alphabet.py
+        t.start()
+        
+    btn = Button(
+        master = screen,
+        text = "Teach!",
+        font = "Arial 26 bold",
+        foreground = peach, 
+        background = white, 
+        command=teach_me, 
+    )
+    btn.grid(row = 4, column = 2, sticky = "nsew")
+    threading.Thread(target = type_slow, args=(btn,)).start()
+
+    input = Entry(
+        master=screen, 
+        font= "Arial 26 bold", 
+        foreground = peach, 
+        background = white, 
+    
+    )
+    input.grid(row = 3, column = 2, sticky = "nsew")
+    input.insert(0, "Your audio file path here")
+    threading.Thread(target = type_slow, args=(input,)).start()
+
+    def clear_input(_):
+        input.delete(0, "end")
+
+    input.bind("<Button-1>", clear_input)
     
 
 
