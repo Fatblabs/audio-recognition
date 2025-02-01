@@ -130,9 +130,9 @@ def train(EPOCHS = 15):
     )
     voice_recognition_Model.save('saved_model/my_model')
 
-def evaluate():
+def evaluate(sampleEvaluatePath):
     voice_recognition_Model = tf.keras.models.load_model('saved_model/my_model')
-    
+
 
 #voice_recognition_Model.evaluate()
 
