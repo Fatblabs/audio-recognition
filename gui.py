@@ -1,6 +1,7 @@
 from tkinter import *
 import threading
 import time
+import training
 
 window = Tk()
 window.geometry("300x300")
