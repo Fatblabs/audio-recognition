@@ -246,7 +246,10 @@ def init_teach_screen() -> None:
             t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...I am learning."))
             #C:\Users\duozh\Data Structures\Competitive Programming\alphabet.py
             t.start()
+            threading.Thread(target = training.train).start()
+
         t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...I can't find the folder."))
+        t.start()
         
     btn = Button(
         master = screen,
