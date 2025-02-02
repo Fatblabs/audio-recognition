@@ -4,7 +4,7 @@ import time
 import training
 
 window = Tk()
-window.geometry("300x300")
+window.geometry("1920x1080")
 window.title("Audio Recognizer")
 window.columnconfigure(0, weight=1)
 window.rowconfigure(0, weight=1)
