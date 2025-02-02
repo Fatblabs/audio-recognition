@@ -159,7 +159,8 @@ def init_import_screen() -> None:
     def who_am_i():
         path = input.get().strip()
         #Add recognition method here. 
-        t = threading.Thread(target = type_slow, args=(output, btn, "🤖: ...I don't know."))
+        guess = str(training.evaluate(path)[0])
+        t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...Is this {guess}?"))
         t.start()
         
     btn = Button(
@@ -247,7 +248,8 @@ def init_teach_screen() -> None:
             #C:\Users\duozh\Data Structures\Competitive Programming\alphabet.py
             t.start()
             threading.Thread(target = training.train).start()
-
+        else:
+            training.train()
         t = threading.Thread(target = type_slow, args=(output, btn, f"🤖: ...I can't find the folder."))
         t.start()
         

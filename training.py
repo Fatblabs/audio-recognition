@@ -175,13 +175,13 @@ def evaluate(sampleEvaluatePath):
     predicted_class = np.argmax(prediction, axis=-1)
 
     print(f"Prediction: {predicted_class}")
-    print(label_names[predicted_class])
-    return predicted_class
+    return label_names[predicted_class]
 
-setDataSetPath("/Users/fatblabs/GitHub Repos/audio-recognition/DataSet")
-train()
-evaluate("/Users/fatblabs/Downloads/testingfinal.wav")
+#setDataSetPath("/Users/fatblabs/GitHub Repos/audio-recognition/DataSet")
+#train()
+#print(evaluate("/Users/fatblabs/Downloads/testingAudio.wav"))
 #voice_recognition_Model.evaluate()
-
+#/Users/fatblabs/Downloads/testingfinal.wav"
+#/Users/fatblabs/GitHub Repos/audio-recognition/DataSet
 #input layer
 #voice_recognition_Model.add(tf.keras.layers.Input(shape = (128, ,10))
